@@ -1,0 +1,13 @@
+name: @CONTAINER_PROJECT@
+services:
+  dev:
+    build:
+      context: .
+      args:
+        DEV_UID: "@DEV_UID@"
+        DEV_GID: "@DEV_GID@"
+    command: ["sleep", "infinity"]
+    volumes:
+      - type: bind
+        source: .
+        target: /workspace

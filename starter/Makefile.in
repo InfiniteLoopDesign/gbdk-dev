@@ -1,0 +1,13 @@
+ROM := build/game.gbc
+LCC ?= lcc
+
+.PHONY: all clean
+all: $(ROM)
+
+$(ROM): src/main.c Makefile
+	mkdir -p $(@D)
+	$(LCC) -Wm-yC -Wm-yn@ROM_TITLE@ -o $(@D)/game.tmp.gbc $<
+	mv $(@D)/game.tmp.gbc $@
+
+clean:
+	rm -rf build

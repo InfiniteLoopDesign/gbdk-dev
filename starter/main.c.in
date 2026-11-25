@@ -1,0 +1,49 @@
+#include <gb/cgb.h>
+#include <gb/gb.h>
+#include <gbdk/console.h>
+#include <stdio.h>
+
+static const char project_name[] = "@PROJECT_NAME@";
+static const palette_color_t title_colors[] = {
+    RGB(3, 5, 9), RGB(23, 23, 21), RGB(27, 27, 24), RGB(31, 31, 28)
+};
+static const palette_color_t gold[] = {0, RGB(31, 23, 4), 0, 0};
+
+// Two 8x8 sprites, each with one visible color and a transparent background.
+static const uint8_t sparkle_tiles[] = {
+    0x00, 0, 0x10, 0, 0x10, 0, 0x7c, 0, 0x10, 0, 0x10, 0, 0x00, 0, 0x00, 0,
+    0x10, 0, 0x10, 0, 0x38, 0, 0xfe, 0, 0x38, 0, 0x10, 0, 0x10, 0, 0x00, 0
+};
+
+void main(void) {
+    gotoxy((20u - (sizeof(project_name) - 1u)) / 2u, 8);
+    printf("%s", project_name);
+
+    // Keep the sparkle graphics in a separate VRAM bank from the title font.
+    DISPLAY_OFF;
+    set_bkg_palette(0, 1, title_colors);
+    VBK_REG = 1;
+    set_sprite_data(0, 2, sparkle_tiles);
+    VBK_REG = 0;
+    set_sprite_palette(0, 1, gold);
+    SPRITES_8x8;
+    set_sprite_prop(0, S_BANK);
+    set_sprite_prop(1, S_BANK);
+    set_sprite_prop(2, S_BANK);
+    move_sprite(0, 61, 66);
+    move_sprite(1, 84, 59);
+    move_sprite(2, 107, 66);
+    SHOW_SPRITES;
+    DISPLAY_ON;
+
+    uint8_t phase = 0;
+    while (1) {
+        set_sprite_tile(0, phase);
+        set_sprite_tile(1, phase ^ 1u);
+        set_sprite_tile(2, phase);
+        for (uint8_t frame = 0; frame < 18u; ++frame) {
+            vsync();
+        }
+        phase ^= 1u;
+    }
+}

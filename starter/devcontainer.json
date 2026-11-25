@@ -1,0 +1,8 @@
+{
+  "name": "GBDK workspace",
+  "dockerComposeFile": "../compose.yaml",
+  "service": "dev",
+  "workspaceFolder": "/workspace",
+  "remoteUser": "dev",
+  "shutdownAction": "none"
+}

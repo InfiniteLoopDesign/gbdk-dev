@@ -1,0 +1,20 @@
+# @PROJECT_NAME@
+
+Your first Game Boy Color ROM shows the project name with three looping gold sparkles. Open `build/game.gbc` in a Game Boy Color emulator.
+
+## Edit and rebuild
+
+1. Connect VS Code to the Docker host if you work remotely. Open this project's folder and select **Dev Containers: Reopen in Container**.
+2. Open `src/main.c`. Change the title or start adding your game after the animation.
+3. Run `make` in the VS Code terminal or choose **Terminal → Run Build Task**. Reload `build/game.gbc` in your emulator.
+
+You can also rebuild from the host terminal in this directory.
+
+```sh
+docker compose up -d
+docker compose exec -T dev make
+```
+
+Use `docker compose down` from this folder to remove the container. Your source, Git history, and ROM stay here. To play on another computer, copy or download `build/game.gbc` from the host and open it in your emulator. You can save revisions with Git and share the ROM as a release asset when it's ready.
+
+Use HTTPS Git remotes inside the container. For a Git remote that uses SSH, run Git in the host checkout with your host's SSH client and keys.

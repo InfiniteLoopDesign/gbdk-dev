@@ -1,0 +1,8 @@
+{
+  "name": "GBDK 4.6.0",
+  "build": {
+    "dockerfile": "../Dockerfile",
+    "context": ".."
+  },
+  "remoteUser": "dev"
+}
