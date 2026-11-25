@@ -7,9 +7,15 @@ fail() {
     exit 1
 }
 
+dockerfile=Dockerfile
+if [[ ${1:-} == --published-image ]]; then
+    dockerfile=starter/Dockerfile.published
+    shift
+fi
+
 case ${1:-} in
     -h|--help)
-        printf 'Usage: %s ["Project Name" "/path/to/new-directory"]\n' "$0"
+        printf 'Usage: %s [--published-image] ["Project Name" "/path/to/new-directory"]\n' "$0"
         exit 0
         ;;
 esac
@@ -56,7 +62,8 @@ path_hash=$(printf '%s' "$project_path" | sha256sum | cut -c1-12)
 compose_name="gbdk-$slug-$path_hash"
 
 mkdir src .devcontainer .vscode
-cp -- "$starter_root"/{Dockerfile,.dockerignore,.gitignore} .
+cp -- "$starter_root/$dockerfile" Dockerfile
+cp -- "$starter_root"/{.dockerignore,.gitignore} .
 cp -- "$starter_root/.vscode/tasks.json" .vscode/
 cp -- "$starter_root/starter/devcontainer.json" .devcontainer/
 sed "s/@PROJECT_NAME@/$project_name/g" "$starter_root/starter/main.c.in" > src/main.c

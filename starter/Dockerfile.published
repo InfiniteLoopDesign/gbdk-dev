@@ -1,0 +1,14 @@
+FROM docker.io/daviau/gbdk-dev:4.6.0@sha256:cf2db1136d0b3219c19f45c137bf57578da2c4b5deec2dd1bcf2e3108af60ee0
+
+ARG DEV_UID=1000
+ARG DEV_GID=1000
+
+USER root
+# Match the host account so builds in the bind-mounted folder stay writable.
+RUN set -eu; \
+    if [ "$DEV_UID:$DEV_GID" != "1000:1000" ]; then \
+        if ! getent group "$DEV_GID" >/dev/null; then groupadd --gid "$DEV_GID" dev-host; fi; \
+        usermod --uid "$DEV_UID" --gid "$DEV_GID" dev; \
+        chown -R "$DEV_UID:$DEV_GID" /home/dev; \
+    fi
+USER dev

@@ -4,15 +4,14 @@ Build **Green Light**, a Game Boy Color race-start reaction test. Press A to sta
 
 ## Start a blank project
 
-On the Linux host where you use VS Code remotely, open this folder and run the launcher. It requires Docker with the Compose plugin.
+On the Linux host where you use VS Code remotely, open this checkout. Both launchers require Docker with the Compose plugin.
 
-```sh
-./new-project.sh
-```
+- **Build the toolchain from the GitHub checkout.** Run `./new-project.sh`. Docker builds the development image locally using the Debian base from Amazon ECR Public and the pinned GBDK release archive. This path needs Docker and internet access for the base image and packages. [Docker Official Images on Amazon ECR Public](https://aws.amazon.com/blogs/containers/docker-official-images-now-available-on-amazon-elastic-container-registry-public/)
+- **Use the published toolchain.** Run `./new-project-from-image.sh`. Docker uses the published `daviau/gbdk-dev:4.6.0` image at its release digest and adds a small layer to match the host user. [Docker Hub image](https://hub.docker.com/r/daviau/gbdk-dev)
 
 Enter a project name of up to 18 characters and a new directory path. The default is a folder next to this repository. The launcher initializes Git, starts the dev container, builds `build/game.gbc`, and checks the cartridge header and display title. It prints the absolute dev directory and ROM paths. Open the dev directory in remote VS Code and choose **Dev Containers: Reopen in Container**. Open the ROM in an emulator to see your project name and three looping gold sparkles.
 
-For a scripted launch, pass both values directly.
+For a scripted launch, pass both values directly to either launcher.
 
 ```sh
 ./new-project.sh "Orbit Test" "$HOME/dev/orbit-test"

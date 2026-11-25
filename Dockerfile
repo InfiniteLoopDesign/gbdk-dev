@@ -1,4 +1,5 @@
-FROM --platform=$BUILDPLATFORM debian:trixie-slim AS toolchain
+ARG DEBIAN_IMAGE=public.ecr.aws/docker/library/debian:trixie-slim
+FROM --platform=$BUILDPLATFORM ${DEBIAN_IMAGE} AS toolchain
 ARG TARGETARCH
 
 RUN apt-get update \
@@ -23,7 +24,7 @@ RUN set -eu; \
       "https://raw.githubusercontent.com/gbdk-2020/gbdk-2020/$gbdk_version/LICENSE"; \
     echo '18095f7690d1565e267e51b2954bd59108231e0c5dd2d5837e226ddcb6f1c4f7  /opt/gbdk/LICENSE' | sha256sum -c -
 
-FROM debian:trixie-slim
+FROM ${DEBIAN_IMAGE}
 ARG DEV_UID=1000
 ARG DEV_GID=1000
 
