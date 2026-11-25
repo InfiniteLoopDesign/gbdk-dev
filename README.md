@@ -1,6 +1,6 @@
 # GBDK starter
 
-Build **Green Light**, a Game Boy Color race-start reaction test. Press A to start the sequence. Five red lights come on one by one, then all go out together after a variable pause. Press A as soon as they go out to see your reaction time in milliseconds. An early press is a jump start. Press A again to retry.
+Set up a Game Boy Color project with GBDK-2020, Docker, and VS Code. The checkout includes a minimal ROM that boots to a blank white screen. Use one of the launchers to create a separate named project with a title screen.
 
 ## Start a blank project
 
@@ -19,7 +19,7 @@ For a scripted launch, pass both values directly to either launcher.
 
 Run `docker compose down` from the generated directory when done with the container. The project's README explains how to rebuild and retrieve the ROM.
 
-## Build your first ROM
+## Build the blank ROM
 
 Install Docker and start it. Open a terminal in this folder, where you can see the `Dockerfile` and `Makefile`.
 
@@ -28,15 +28,15 @@ docker build -t gbdk-dev:4.6.0 .
 docker run --rm --mount "type=bind,source=$PWD,target=/workspace" gbdk-dev:4.6.0 make
 ```
 
-The first command builds the toolchain image. Run the second command each time you change the game. Docker mounts this folder into the container, so `build/green-light.gbc` appears in your checkout and stays there when the container exits.
+The first command builds the toolchain image. Run the second command each time you change the source. Docker mounts this folder into the container, so `build/blank.gbc` appears in your checkout and stays there when the container exits.
 
 These commands use a Bash-compatible shell. On Linux, if the build folder is unwritable because your host user has a different numeric ID, add `--user "$(id -u):$(id -g)"` after `--rm`. On Windows, run the commands from WSL with Docker integration enabled, or use the VS Code workflow below.
 
 ## Run it and make a change
 
-1. Open `build/green-light.gbc` in a Game Boy Color emulator such as [SameBoy](https://sameboy.github.io/). Look in your emulator's input settings for the key mapped to Game Boy A.
-2. In `src/main.c`, change `GREEN LIGHT` to a short title of your own. Save the file and build again.
-3. Reload or reopen the ROM in the emulator and check the title. Keep the editor and emulator open while you iterate.
+1. Open `build/blank.gbc` in a Game Boy Color emulator. Expect a solid white screen. [SameBoy](https://sameboy.github.io/)
+2. In `src/main.c`, change `SCREEN_COLOR` from `RGB_WHITE` to `RGB_BLUE`. Save the file and build again.
+3. Reload or reopen the ROM in the emulator and check that the screen turns blue.
 
 `make` skips the build when the source and Makefile are unchanged. Run `make clean` inside the container to remove generated files and start fresh.
 
@@ -56,7 +56,7 @@ Use HTTPS Git remotes inside the container. For a Git remote that uses SSH, run 
 The `.gbc` file is the entire playable build. On a remote SSH host, copy it to your computer. Run this from your computer and replace the login and path with your own.
 
 ```sh
-scp dev@your-host:/path/to/checkout/build/green-light.gbc .
+scp dev@your-host:/path/to/checkout/build/blank.gbc .
 ```
 
 You can also download the file from VS Code's remote Explorer. To play on a phone, transfer the ROM to the phone and open it in a GBC emulator, or import it from the phone's files into the [SkyEmu browser player](https://web.skyemu.app/). To share a build, attach the ROM to a release in your Git hosting service. Give each release a version so testers know which build they are playing.
